@@ -102,6 +102,7 @@ function getOpeningHours() {
 
   var answer = '';
   var end = '';
+  var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
   var xhttp = new XMLHttpRequest();
   xhttp.open("GET", "https://us-central1-test-bcc13.cloudfunctions.net/openingHours", true);
   xhttp.setRequestHeader("Content-Type", "application/json");
