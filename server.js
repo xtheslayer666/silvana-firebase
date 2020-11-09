@@ -1,8 +1,8 @@
-let express = require('express'),
-  bodyParser = require('body-parser'),
-  port = process.env.PORT || 3000,
-  app = express();
-let alexaVerifier = require('alexa-verifier');
+import express from 'express';
+import { json } from 'body-parser';
+let port = process.env.PORT || 3000;
+let app = express();
+import alexaVerifier from 'alexa-verifier';
 var isFirstTime = true;
 const SKILL_NAME = 'Silvana Öffnungszeiten';
 const GET_OH_MESSAGE = "Das Silvana ist heute ";
@@ -23,7 +23,7 @@ const data = [
   'von 10 bis 22 Uhr geöffnet.',
 ];
 
-app.use(bodyParser.json({
+app.use(json({
   verify: function getRawBody(req, res, buf) {
     req.rawBody = buf.toString();
   }
@@ -103,15 +103,15 @@ function getOpeningHours() {
 
   var answer = '';
   var end = '';
-  global.XMLHttpRequest = require("xhr2");
-  var xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://us-central1-test-bcc13.cloudfunctions.net/openingHours", true);
-  xhttp.setRequestHeader("Content-Type", "application/json");
-  xhttp.send(null);
-  xhttp.onreadystatechange = function() {
+  var XMLHttpRequest = require('xhr2');
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://us-central1-test-bcc13.cloudfunctions.net/openingHours", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(null);
+  xhr.onreadystatechange = function() {
   if (this.readyState == 4 ) {
   // Typical action to be performed when the document is ready:
-  end = JSON.parse(xhttp.response);
+  end = JSON.parse(xhr.response);
   answer = end[1].Dienstag.toString();
 
   // const openings = data;
