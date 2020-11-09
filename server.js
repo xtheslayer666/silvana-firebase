@@ -1,9 +1,8 @@
-import express from 'express';
-import { json } from 'body-parser';
-let port = process.env.PORT || 3000;
-let app = express();
-import alexaVerifier from 'alexa-verifier';
-var isFirstTime = true;
+let express = require('express'),
+  bodyParser = require('body-parser'),
+  port = process.env.PORT || 3000,
+  app = express();
+let alexaVerifier = require('alexa-verifier');
 const SKILL_NAME = 'Silvana Öffnungszeiten';
 const GET_OH_MESSAGE = "Das Silvana ist heute ";
 const HELP_MESSAGE = 'Sie können von mir die heutige Öffnungszeit des Silvana Hallenbads erfahren.';
@@ -23,7 +22,7 @@ const data = [
   'von 10 bis 22 Uhr geöffnet.',
 ];
 
-app.use(json({
+app.use(bodyParser.json({
   verify: function getRawBody(req, res, buf) {
     req.rawBody = buf.toString();
   }
@@ -103,15 +102,14 @@ function getOpeningHours() {
 
   var answer = '';
   var end = '';
-  var XMLHttpRequest = require('xhr2');
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://us-central1-test-bcc13.cloudfunctions.net/openingHours", true);
-  xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.send(null);
-  xhr.onreadystatechange = function() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "https://us-central1-test-bcc13.cloudfunctions.net/openingHours", true);
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(null);
+  xhttp.onreadystatechange = function() {
   if (this.readyState == 4 ) {
   // Typical action to be performed when the document is ready:
-  end = JSON.parse(xhr.response);
+  end = JSON.parse(xhttp.response);
   answer = end[1].Dienstag.toString();
 
   // const openings = data;
@@ -125,7 +123,7 @@ function getOpeningHours() {
 
   return buildResponseWithRepromt(speechOutput, false, answer, more);
   }
-  }
+}
 }
 
 function buildResponse(speechText, shouldEndSession, cardText) {
