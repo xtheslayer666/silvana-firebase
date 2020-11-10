@@ -12,16 +12,6 @@ const MORE_MESSAGE = ' Haben Sie`s verstanden?'
 const PAUSE = '<break time="0.3s" />'
 const WHISPER = '<amazon:effect name="whispered"/>'
 
-// const data = [
-//   'von 9 bis 20 Uhr geöffnet.',
-//   'von 6 Uhr 30 bis 8 Uhr zum Frühschwimmen geöffnet.',
-//   'von 13 bis 20 Uhr geöffnet.',
-//   'von 13 bis 20 Uhr geöffnet.',
-//   'von 6 Uhr 30 bis 8 Uhr zum Frühschwimmen und von 13 bis 20 Uhr geöffnet.',
-//   'von 13 bis 20 Uhr geöffnet.',
-//   'von 10 bis 22 Uhr geöffnet.',
-// ];
-
 app.use(bodyParser.json({
   verify: function getRawBody(req, res, buf) {
     req.rawBody = buf.toString();
@@ -111,13 +101,14 @@ function getOpeningHours() {
   if (this.readyState == 4 && (this.status >= 200 && this.status < 400 )) {
   // Typical action to be performed when the document is ready:
 
-  end = JSON.parse(xhttp.responseText);
-  answer = end[1].Dienstag.toString() + 'geöffnet.';
+  // end = JSON.parse(xhttp.responseText);
+  // answer = end[1].Dienstag.toString() + 'geöffnet.';
 
   // const openings = data;
   // const heute = new Date();
   // const openingIndex = heute.getDay();
   // const day = openings[openingIndex];
+  answer = 'für das SLAYER Konzert geöffnet!!!';
   const tempOutput = WHISPER + GET_OH_MESSAGE + answer + PAUSE;
   const speechOutput = tempOutput + MORE_MESSAGE
   const more = MORE_MESSAGE
