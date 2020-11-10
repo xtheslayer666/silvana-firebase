@@ -98,20 +98,18 @@ function getOpeningHours() {
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send(null);
   xhttp.onreadystatechange = function() {
-  if (this.readyState == 4 && (this.status >= 200 && this.status < 400 )) {
-  // Typical action to be performed when the document is ready:
+  if (this.readyState == 4) {
 
-  // end = JSON.parse(xhttp.responseText);
-  // answer = end[1].Dienstag.toString() + 'geöffnet.';
+  end = JSON.parse(xhttp.responseText);
+  answer = end[1].Dienstag.toString() + 'geöffnet.';
 
   // const openings = data;
   // const heute = new Date();
   // const openingIndex = heute.getDay();
   // const day = openings[openingIndex];
-  answer = 'für das SLAYER Konzert geöffnet!!!';
   const tempOutput = WHISPER + GET_OH_MESSAGE + answer + PAUSE;
-  const speechOutput = tempOutput + MORE_MESSAGE
-  const more = MORE_MESSAGE
+  const speechOutput = tempOutput + MORE_MESSAGE;
+  const more = MORE_MESSAGE;
 
   return buildResponseWithRepromt(speechOutput, false, answer, more);
   }
