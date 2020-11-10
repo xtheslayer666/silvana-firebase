@@ -124,9 +124,9 @@ function getOpeningHours() {
 
   return buildResponseWithRepromt(speechOutput, false, answer, more);
   }
-  else return buildResponseWithRepromt('Mahlzeit', false, 'Moin', MORE_MESSAGE);
+  else return buildResponseWithRepromt('Moin', false, 'Moin', MORE_MESSAGE);
 }
-return buildResponseWithRepromt('Mahlzeit', false, 'Moin', MORE_MESSAGE);
+//return buildResponseWithRepromt('Mahlzeit', false, 'Moin', MORE_MESSAGE);
 }
 
 function buildResponse(speechText, shouldEndSession, cardText) {
