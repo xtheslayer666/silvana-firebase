@@ -110,7 +110,7 @@ function getOpeningHours() {
   xhttp.onreadystatechange = function() {
   if (this.readyState == 4 && (this.status >= 200 && this.status < 400 )) {
   // Typical action to be performed when the document is ready:
-  
+
   end = JSON.parse(xhttp.responseText);
   answer = end[1].Dienstag.toString() + 'geöffnet.';
 
@@ -124,7 +124,9 @@ function getOpeningHours() {
 
   return buildResponseWithRepromt(speechOutput, false, answer, more);
   }
+  else return buildResponseWithRepromt('Mahlzeit', false, 'Moin', MORE_MESSAGE);
 }
+return buildResponseWithRepromt('Mahlzeit', false, 'Moin', MORE_MESSAGE);
 }
 
 function buildResponse(speechText, shouldEndSession, cardText) {
