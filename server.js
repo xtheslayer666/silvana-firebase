@@ -101,7 +101,11 @@ function getOpeningHours() {
   if (this.readyState == 4) {
 
   end = JSON.parse(xhttp.responseText);
+  console.log("==== END ======");
+  console.log(end);
   answer = end[1].Dienstag.toString() + 'geöffnet.';
+  console.log("==== ANSWER ======");
+  console.log(answer);
 
   // const openings = data;
   // const heute = new Date();
