@@ -101,25 +101,24 @@ function getOpeningHours() {
   if (this.readyState == 4) {
 
   end = JSON.parse(xhttp.responseText);
-  console.log("==== END ======");
+  console.log("==== END ====");
   console.log(end);
-  answer = end[1].Dienstag.toString() + 'geöffnet.';
-  console.log("==== ANSWER ======");
+  answer = end[1].Dienstag.toString() + ' geöffnet.';
+  console.log("==== ANSWER ====");
   console.log(answer);
 
   // const openings = data;
   // const heute = new Date();
   // const openingIndex = heute.getDay();
   // const day = openings[openingIndex];
-  const tempOutput = WHISPER + GET_OH_MESSAGE + answer + PAUSE;
+  const tempOutput = GET_OH_MESSAGE + answer + PAUSE;
   const speechOutput = tempOutput + MORE_MESSAGE;
   const more = MORE_MESSAGE;
 
-  return buildResponseWithRepromt(speechOutput, false, answer, more);
+  return buildResponseWithRepromt(answer, false, answer, more);
   }
-  else return buildResponseWithRepromt('Moin', false, 'Moin', MORE_MESSAGE);
 }
-//return buildResponseWithRepromt('Mahlzeit', false, 'Moin', MORE_MESSAGE);
+
 }
 
 function buildResponse(speechText, shouldEndSession, cardText) {
