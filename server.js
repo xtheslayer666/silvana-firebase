@@ -115,7 +115,7 @@ function getOpeningHours() {
   const speechOutput = tempOutput + MORE_MESSAGE;
   const more = MORE_MESSAGE;
 
-  buildResponseWithRepromt(speechOutput, false, answer, more);
+  buildResponse(speechOutput, false, answer);
   }
 }
   return;
