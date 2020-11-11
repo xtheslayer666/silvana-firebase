@@ -115,10 +115,10 @@ function getOpeningHours() {
   const speechOutput = tempOutput + MORE_MESSAGE;
   const more = MORE_MESSAGE;
 
-  return buildResponseWithRepromt(answer, false, answer, more);
+  buildResponseWithRepromt(speechOutput, false, answer, more);
   }
 }
-
+  return;
 }
 
 function buildResponse(speechText, shouldEndSession, cardText) {
