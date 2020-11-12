@@ -108,8 +108,8 @@ function loadJSON(file, callback) {
 
     var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
     var xobj = new XMLHttpRequest();
-    xobj.overrideMimeType('application/json');
     xobj.open('GET', file, true);
+    xobj.setRequestHeader("Content-Type", "application/json");
     xobj.onreadystatechange = function () {
 
         if (xobj.readyState == 4 && xobj.status == '200') {
