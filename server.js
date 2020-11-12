@@ -11,7 +11,9 @@ const STOP_MESSAGE = 'Super! Tschüss schönen Feierabend!';
 const MORE_MESSAGE = ' Haben Sie`s verstanden?'
 const PAUSE = '<break time="0.3s" />'
 const WHISPER = '<amazon:effect name="whispered"/>'
+
 var mData = '';
+mData = '';
 
 app.use(bodyParser.json({
   verify: function getRawBody(req, res, buf) {
@@ -54,19 +56,21 @@ app.post('/openingHours', requestVerifier, function(req, res) {
 
     if (req.body.request.intent.name == 'GetAllOpeningHours' || req.body.request.intent.name == 'AMAZON.NoIntent' ) 
     {
-      res.json(loadJSON('https://us-central1-test-bcc13.cloudfunctions.net/openingHours', function (text) 
+      loadJSON('https://us-central1-test-bcc13.cloudfunctions.net/openingHours', function (text) 
       {
         mData = JSON.parse(text);
-        console.log("==== DATA ====");
-        console.log(mData);
-        var answer = mData[3].Donnerstag.toString() + ' geöffnet.';
-        console.log("==== ANSWER ====");
-        console.log(answer);
-        const tempOutput = GET_OH_MESSAGE + answer + PAUSE;
-        const speechOutput = tempOutput + MORE_MESSAGE;
-        const more = MORE_MESSAGE;
-        buildResponseWithRepromt(speechOutput, false,  more);
-      }));
+      });
+
+      console.log("==== DATA ====");
+      console.log(mData);
+      var answer = mData[3].Donnerstag.toString() + ' geöffnet.';
+      console.log("==== ANSWER ====");
+      console.log(answer);
+      const tempOutput = GET_OH_MESSAGE + answer + PAUSE;
+      const speechOutput = tempOutput + MORE_MESSAGE;
+      const more = MORE_MESSAGE;
+      
+      res.json(buildResponseWithRepromt(speechOutput, false,  more));
     }
     
     else if (req.body.request.intent.name == 'AMAZON.YesIntent')
