@@ -46,7 +46,7 @@ app.post('/openingHours', requestVerifier, function(req, res) {
 
   if (req.body.request.type === 'LaunchRequest') {
     var speechOutput = 'Willkommen bei Silvana Öffnungszeiten! <break time="0.3s" />' + HELP_REPROMPT;
-    res.json(buildResponseWithRepromt(speechOutput, false, '', ''));
+    res.json(buildResponseWithRepromt(speechOutput, false, ''));
   } else if (req.body.request.type === 'SessionEndedRequest') { /* ... */
     log("Session End")
   } else if (req.body.request.type === 'IntentRequest') {
@@ -69,13 +69,13 @@ app.post('/openingHours', requestVerifier, function(req, res) {
 });
 
 function handleDataMissing() {
-  return buildResponse(MISSING_DETAILS, true, null)
+  return buildResponse(MISSING_DETAILS, true)
 }
 
 function stopAndExit() {
 
   const speechOutput = STOP_MESSAGE
-  var jsonObj = buildResponse(speechOutput, true, "");
+  var jsonObj = buildResponse(speechOutput, true );
   return jsonObj;
 }
 
@@ -83,7 +83,7 @@ function help() {
 
   const speechOutput = HELP_MESSAGE
   const reprompt = HELP_REPROMPT
-  var jsonObj = buildResponseWithRepromt(speechOutput, false, "", reprompt);
+  var jsonObj = buildResponseWithRepromt(speechOutput, false, reprompt);
 
   return jsonObj;
 }
@@ -115,13 +115,13 @@ function getOpeningHours() {
   const speechOutput = tempOutput + MORE_MESSAGE;
   const more = MORE_MESSAGE;
 
-  buildResponse(speechOutput, false, answer);
+  return buildResponseWithRepromt(speechOutput, false,  more);
   }
 }
   return;
 }
 
-function buildResponse(speechText, shouldEndSession, cardText) {
+function buildResponse(speechText, shouldEndSession) {
 
   const speechOutput = "<speak>" + speechText + "</speak>"
   var jsonObj = {
@@ -132,18 +132,12 @@ function buildResponse(speechText, shouldEndSession, cardText) {
         "type": "SSML",
         "ssml": speechOutput
       },
-      "card": {
-        "type": "Simple",
-        "title": SKILL_NAME,
-        "content": cardText,
-        "text": cardText
-      }
     }
   }
   return jsonObj
 }
 
-function buildResponseWithRepromt(speechText, shouldEndSession, cardText, reprompt) {
+function buildResponseWithRepromt(speechText, shouldEndSession, reprompt) {
 
   const speechOutput = "<speak>" + speechText + "</speak>"
   var jsonObj = {
@@ -154,12 +148,6 @@ function buildResponseWithRepromt(speechText, shouldEndSession, cardText, reprom
          "type": "SSML",
          "ssml": speechOutput
        },
-     "card": {
-       "type": "Simple",
-       "title": SKILL_NAME,
-       "content": cardText,
-       "text": cardText
-     },
      "reprompt": {
        "outputSpeech": {
          "type": "PlainText",
