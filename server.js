@@ -54,20 +54,19 @@ app.post('/openingHours', requestVerifier, function(req, res) {
 
     if (req.body.request.intent.name == 'GetAllOpeningHours' || req.body.request.intent.name == 'AMAZON.NoIntent' ) 
     {
-      loadJSON('https://us-central1-test-bcc13.cloudfunctions.net/openingHours', function (text) 
-        {
-          mData = JSON.parse(text);
-        });
-
+      res.json(loadJSON('https://us-central1-test-bcc13.cloudfunctions.net/openingHours', function (text) 
+      {
+        mData = JSON.parse(text);
         console.log("==== DATA ====");
         console.log(mData);
-        var answer = mData[1].Dienstag.toString() + ' geöffnet.';
+        var answer = mData[3].Donnerstag.toString() + ' geöffnet.';
         console.log("==== ANSWER ====");
         console.log(answer);
         const tempOutput = GET_OH_MESSAGE + answer + PAUSE;
         const speechOutput = tempOutput + MORE_MESSAGE;
         const more = MORE_MESSAGE;
-        res.json(buildResponseWithRepromt(speechOutput, false,  more));
+        buildResponseWithRepromt(speechOutput, false,  more);
+      }));
     }
     
     else if (req.body.request.intent.name == 'AMAZON.YesIntent')
