@@ -12,8 +12,8 @@ const MORE_MESSAGE = ' Haben Sie`s verstanden?'
 const PAUSE = '<break time="0.3s" />'
 const WHISPER = '<amazon:effect name="whispered"/>'
 
-var mData = '';
-mData = '';
+var end = '';
+end = '';
 
 app.use(bodyParser.json({
   verify: function getRawBody(req, res, buf) {
@@ -58,13 +58,40 @@ app.post('/openingHours', requestVerifier, function(req, res) {
     {
       loadJSON('https://us-central1-test-bcc13.cloudfunctions.net/openingHours', function (text) 
       {
-        mData = JSON.parse(text);
-        console.log("==== DATA ====");
-        console.log(mData);
-        var answer = mData[3].Donnerstag.toString() + ' geöffnet.';
-        console.log("==== ANSWER ====");
-        console.log(answer);
-        const tempOutput = GET_OH_MESSAGE + answer + PAUSE;
+        end = JSON.parse(text);
+
+        var string = '';
+
+        const heute = new Date();
+        var index = heute.getDay();
+    
+        switch (index)
+        {
+          case 0:
+            string = end[index+6].Sonntag.toString();
+            break;
+          case 1:
+            string = end[index-1].Montag.toString();
+            break;
+          case 2:
+            string = end[index-1].Dienstag.toString();
+            break;
+          case 3:
+            string = end[index-1].Mittwoch.toString();
+            break;
+          case 4:
+            string = end[index-1].Donnerstag.toString();
+            break;
+          case 5:
+            string = end[index-1].Freitag.toString();
+            break;
+          case 6:
+            string = end[index-1].Samstag.toString();
+            break;
+          default:
+            break;
+        }
+        const tempOutput = GET_OH_MESSAGE + string + PAUSE;
         const speechOutput = tempOutput + MORE_MESSAGE;
         const more = MORE_MESSAGE;
         res.json(buildResponseWithRepromt(speechOutput, false,  more));
