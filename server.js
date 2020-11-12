@@ -97,8 +97,12 @@ function getOpeningHours() {
   xhttp.open("GET", "https://us-central1-test-bcc13.cloudfunctions.net/openingHours", true);
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send(null);
-  xhttp.onreadystatechange = function() {
-  if (this.readyState == 4) {
+  // xhttp.onreadystatechange = function() {
+
+    setTimeout(function(){  
+      do { }
+    while (!xhttp.responseText); }, 30000);
+  
 
   end = JSON.parse(xhttp.responseText);
   console.log("==== END ====");
@@ -117,9 +121,8 @@ function getOpeningHours() {
 
   return buildResponseWithRepromt(speechOutput, false,  more);
   }
-}
-  return;
-}
+//}
+
 
 function buildResponse(speechText, shouldEndSession) {
 
