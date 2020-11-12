@@ -11,6 +11,7 @@ const STOP_MESSAGE = 'Super! Tschüss schönen Feierabend!';
 const MORE_MESSAGE = ' Haben Sie`s verstanden?'
 const PAUSE = '<break time="0.3s" />'
 const WHISPER = '<amazon:effect name="whispered"/>'
+var mData = '';
 
 app.use(bodyParser.json({
   verify: function getRawBody(req, res, buf) {
@@ -50,21 +51,35 @@ app.post('/openingHours', requestVerifier, function(req, res) {
   } else if (req.body.request.type === 'SessionEndedRequest') { /* ... */
     log("Session End")
   } else if (req.body.request.type === 'IntentRequest') {
-    switch (req.body.request.intent.name) {
-      case 'GetAllOpeningHours':
-        res.json(getOpeningHours());
-        break;
-      case 'AMAZON.NoIntent':
-        res.json(getOpeningHours());
-        break;
-      case 'AMAZON.YesIntent':
-        res.json(stopAndExit());
-        break;
-      case 'AMAZON.HelpIntent':
-        res.json(help());
-        break;
-      default:
+
+    if (req.body.request.intent.name == 'GetAllOpeningHours' || req.body.request.intent.name == 'AMAZON.NoIntent' ) 
+    {
+      loadJSON('https://us-central1-test-bcc13.cloudfunctions.net/openingHours', function (text) 
+        {
+          mData = JSON.parse(text);
+        });
+
+        console.log("==== DATA ====");
+        console.log(mData);
+        var answer = mData[1].Dienstag.toString() + ' geöffnet.';
+        console.log("==== ANSWER ====");
+        console.log(answer);
+        const tempOutput = GET_OH_MESSAGE + answer + PAUSE;
+        const speechOutput = tempOutput + MORE_MESSAGE;
+        const more = MORE_MESSAGE;
+        res.json(buildResponseWithRepromt(speechOutput, false,  more));
     }
+    
+    else if (req.body.request.intent.name == 'AMAZON.YesIntent')
+    {
+      res.json(stopAndExit());
+    }
+
+    else if (req.body.request.intent.name == 'AMAZON.HelpIntent')
+    {
+      res.json(help());
+    }
+
   }
 });
 
@@ -88,40 +103,22 @@ function help() {
   return jsonObj;
 }
 
-function getOpeningHours() {
 
-  var answer = '';
-  var end = '';
-  var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-  var xhttp = new XMLHttpRequest();
-  xhttp.open("GET", "https://us-central1-test-bcc13.cloudfunctions.net/openingHours", true);
-  xhttp.setRequestHeader("Content-Type", "application/json");
-  xhttp.send(null);
-  // xhttp.onreadystatechange = function() {
+function loadJSON(file, callback) {
 
-    setTimeout(function(){  
-      do { }
-    while (!xhttp.responseText); }, 30000);
-  
+    var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+    var xobj = new XMLHttpRequest();
+    xobj.setRequestHeader("Content-Type", "application/json");
+    xobj.open('GET', file, true);
+    xobj.onreadystatechange = function () {
 
-  end = JSON.parse(xhttp.responseText);
-  console.log("==== END ====");
-  console.log(end);
-  answer = end[1].Dienstag.toString() + ' geöffnet.';
-  console.log("==== ANSWER ====");
-  console.log(answer);
-
-  // const openings = data;
-  // const heute = new Date();
-  // const openingIndex = heute.getDay();
-  // const day = openings[openingIndex];
-  const tempOutput = GET_OH_MESSAGE + answer + PAUSE;
-  const speechOutput = tempOutput + MORE_MESSAGE;
-  const more = MORE_MESSAGE;
-
-  return buildResponseWithRepromt(speechOutput, false,  more);
-  }
-//}
+        if (xobj.readyState == 4 && xobj.status == '200') {
+            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+            callback(xobj.responseText);
+        }
+    };
+    xobj.send(null);
+}
 
 
 function buildResponse(speechText, shouldEndSession) {
