@@ -10,7 +10,6 @@ const HELP_REPROMPT = 'Wie kann ich Ihnen weiterhelfen?';
 const STOP_MESSAGE = 'Super! Tschüss schönen Feierabend!';
 const MORE_MESSAGE = ' Haben Sie`s verstanden?'
 const PAUSE = '<break time="0.3s" />'
-const WHISPER = '<amazon:effect name="whispered"/>'
 
 var end = '';
 end = '';
@@ -91,6 +90,7 @@ app.post('/openingHours', requestVerifier, function(req, res) {
           default:
             break;
         }
+        string += ' geöffnet.'
         const tempOutput = GET_OH_MESSAGE + string + PAUSE;
         const speechOutput = tempOutput + MORE_MESSAGE;
         const more = MORE_MESSAGE;
